@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.db.models import Q
-from events.models import Event, State, Game
+from events.models import Event, State, Game, PCGame
 
 # import csv
 # import pandas as pd
@@ -204,6 +204,8 @@ def progress(request, roll_type=None):
     context = {}
     if roll_type == 1:
         game_set = Game.objects.filter(coop=1)
+    elif roll_type == 2:
+        game_set = PCGame.objects.all()
     else:
         game_set = Game.objects.all()
     games = []

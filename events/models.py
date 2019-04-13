@@ -28,3 +28,12 @@ class Game(models.Model):
     ps_plus = models.BooleanField(default=False)
     cover = models.CharField(max_length=6000, blank=True, null=True)
     coop = models.IntegerField(default=0)
+
+class PCGame(models.Model):
+    name = models.CharField(max_length=3000)
+    average_time = models.IntegerField(default=0)
+    played_player1 = models.BooleanField(default=False)
+    played_player2 = models.BooleanField(default=False)
+    ps_plus = models.BooleanField(default=False)
+    cover = models.CharField(max_length=6000, blank=True, null=True)
+    coop = models.IntegerField(default=0)
