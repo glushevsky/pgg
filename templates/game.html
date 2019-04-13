@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Game roll</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        .button {
+            background: #0066A2;
+            color: white;
+            outline: none;
+            border-style: outset;
+            border-color: #0066A2;
+            border-radius: 40px;
+            height: 80px;
+            width: 80px;
+            font: bold 15px arial, sans-serif;
+            text-shadow:none;
+        }
+        .button:hover {
+             background: #0086C2;
+        }
+        .button:active {
+            background: #00d6f2;
+        }
+        .info {
+            height: 300px;
+            width: 30%;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            visibility: hidden;
+        }
+        .info_visible {
+            visibility: visible;
+        }
+        .bad {
+            background-color: #ffaaaa;
+            color: #900000;
+        }
+        .good {
+            background-color: #aaffaa;
+            color: #009000;
+        }
+        .neutral {
+            color: #0050c0;
+        }
+        .descr {
+            padding: 15px;
+            margin-top: 15px;
+            background-color: #cff0ff;
+            border: 1px dashed #0050c0;
+            border-radius: 25px;
+        }
+        .small {
+            font-size: 7pt;
+        }
+        .actual {
+            font-size: 20pt;
+            font-weight: bold;
+        }
+        .peepoclown {
+            background-image: url({% static '023.png' %});
+            background-repeat: no-repeat;
+        }
+        .vanish {
+            transition: 10s;
+            color: #ffffff;
+        }
+    </style>
+    <script>
+        function GetIndex(index, limit) {
+            var result = limit - 1;
+            if (index >= result) {
+                return 0;
+            }
+            return index + 1;
+        }
+        function Environment() {
+            var audio = new Audio(); // Создаём новый элемент Audio
+            audio.src = "{% static music %}"; // Указываем путь к звуку "клика"
+            audio.volume = 0.3;
+            audio.autoplay = true; // Автоматически запускаем
+            var data = '{{ games|safe }}';
+            var elements = JSON.parse(data);
+            var elem_length = elements.length;
+            var iteration_time = 100;
+            var iteration_num = 0;
+            var index = 0;
+            var period = 76000;
+            var timerId = setInterval(function(){
+                Roll(elements, index, elem_length);
+                index = GetIndex(index, elem_length);
+                iteration_num += 1;
+                if(iteration_num*iteration_time === period - iteration_time*100) {
+                    $('#roll').addClass('vanish');
+                }
+            }, iteration_time);
+            setTimeout(function() {
+              clearInterval(timerId);
+              $('#result_section').addClass('info_visible');
+            }, period);
+        }
+        function Roll(elements, index, elem_length) {
+            $('#prepre').text(elements[index]['name']);
+            var tmp_index = GetIndex(index, elem_length);
+            $('#pre').text(elements[tmp_index]['name']);
+            tmp_index = GetIndex(tmp_index, elem_length);
+            $('#cur').text(elements[tmp_index]['name']);
+            tmp_index = GetIndex(tmp_index, elem_length);
+            $('#pos').text(elements[tmp_index]['name']);
+            tmp_index = GetIndex(tmp_index, elem_length);
+            $('#pospos').text(elements[tmp_index]['name']);
+        }
+    </script>
+</head>
+<body {% if environment %}onload="Environment()"{% endif %}>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div id="roll">
+            <p id="prepre" class="small"></p>
+            <p id="pre"></p>
+            <p id="cur" class="actual"></p>
+            <p id="pos"></p>
+            <p id="pospos" class="small"></p>
+        </div>
+        <div id="result_section" class="info">
+            {% if result %}
+                <h3>{{ result.name }}</h3>
+                <div class="descr">
+                    Среднее прохождение: <b>{{ result.time }} часов</b><br/>
+                    <br/>
+                    <br/>
+                    Игрок 1: <b>{% if result.player1 %}пройдено{% else %}не пройдено{% endif %}</b><br/>
+                    Игрок 2: <b>{% if result.player2 %}пройдено{% else %}не пройдено{% endif %}</b>
+                </div>
+            {% endif %}
+        </div>
+        <input type="submit" class="button" value="Start"/>
+    </form>
+    <br/>
+    <a href="/">Назад в меню</a>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if events %}
+        <table>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ event.name }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+<input type="button" value="clear" onclick=""/>
+
+{% if result %}
+    <h3>{{ result.name }}</h3>
+    <div class="{% if result.type.0 == 1 %}good{% else %}bad{% endif %}" style="width: 80px;">
+        <b>{{ result.type.1 }}</b>
+    </div>
+    <div class="neutral">
+        <b>{{ result.subtype.1 }}</b>
+    </div>
+    <div class="descr">
+        {{ result.descr }}
+        <br/>
+        <br/>
+        В результате события к следующему роллу<br/>
+        будет <b>добавлено {{ result.additions|length }}</b> уникальных событий,<br/>
+        будет <b>убрано {{ result.deprecations|length }}</b> уникальных событий
+    </div>
+{% endif %}
+</body>
+</html>

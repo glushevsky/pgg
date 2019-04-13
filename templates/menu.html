@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MENU</title>
+    <style>
+        a.href {
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            padding: .8em 1em calc(.8em + 3px);
+            border-radius: 3px;
+            background: rgb(64,129,199);
+            box-shadow: 0 -3px rgb(53,110,167) inset;
+            transition: 0.2s;
+        }
+        a.href:hover { background: rgb(53, 110, 167); }
+        a.href:active {
+            background: rgb(33,90,147);
+            box-shadow: 0 3px rgb(33,90,147) inset;
+        }
+        div {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+<body>
+<div><a href="/1/" class="href">События для игрока 1</a></div>
+<div><a href="/2/" class="href">События для игрока 2</a></div>
+<div><a href="/game/" class="href">Выбор игры</a></div>
+<div><a href="/progress/" class="href">Выбор игры (new)</a></div>
+<div><a href="/progress/1/" class="href">Выбор coop-игры (new)</a></div>
+<div><a href="/progress_event/" class="href">События (new)</a></div>
+</body>
+</html>
